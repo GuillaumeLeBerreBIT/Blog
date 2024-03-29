@@ -1,0 +1,13 @@
+{% extends "blogs/base.html" %}
+
+{% block content %}
+
+<p>Edit Blog</p>
+<!--Pass in the id from the blogpost variable saved in the context dictionary that will be parsed in the view function-->
+<form action="{% url "blogs:edit_blog" blogpost.id %}" method='post'>
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button name="submit">Save changes</button>
+</form>
+
+{% endblock content %}
