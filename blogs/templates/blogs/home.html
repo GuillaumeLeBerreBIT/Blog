@@ -1,21 +1,28 @@
 {% extends "blogs/base.html" %}
 
+{% block page_header %}
+    <h3>Blogs Posted</h3>
+{% endblock page_header %}
+
 {% block content %}
 
-<p>Blogs posted</p>
-
-<ul>
-    {% for blog in blogposted %}
-        <li>
-            <p>{{ blog.owner }} | {{blog.title}} | {{ blog.date_added|date:'M d, Y' }}</p>
-            <p>{{blog.text}}</p>
-            <p>
+{% for blog in blogposted %}
+    <div class="card mb-5">
+        <h4 class="card-header">
+            {{ blog.owner }} | {{blog.title}} | {{ blog.date_added|date:'M d, Y' }}
+        </h4>
+        <div class="card-body">
+            {{blog.text}}
+        </div>
+        <div class="card-footer">
+            <small>
                 <a href="{% url "blogs:edit_blog"  blog.id %}">Edit post</a>
-            </p>
-        </li>
-    {% empty %}
-        <li>Nothing posted yet!</li>
-    {% endfor %}
-</ul>
+            </small>
+        </div>
+    </div>
+{% empty %}
+    <p>Nothing posted yet!</p>
+{% endfor %}
+
 
 {% endblock content %}
