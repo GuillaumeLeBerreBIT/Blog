@@ -15,7 +15,7 @@
     
     <nav class="navbar navbar-expand-md navbar-light bg-light mb-4 border">
 
-        <a class="navbar-brand" href="{% url 'blogs:blog' %}">
+        <a class="navbar-brand" href="{% url 'blogs:index' %}">
             OwnBlog</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse"
             data-target="#navbarCollapse" aria-controls="navbarCollapse"
@@ -23,6 +23,10 @@
             <span class="navbar-toggler-icon"></span></button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'blogs:blog' %}">
+                        Posts</a>
+                </li>  
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'blogs:add_blog' %}">
                         Add Post</a>

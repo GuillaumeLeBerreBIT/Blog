@@ -1,0 +1,16 @@
+{% extends "blogs/base.html" %}
+
+{% block page_header %}
+
+    <div class="jumbotron">
+        <h1 class="display-4">Follow your adventure!</h1>
+        <p class="lead">Create your OwnBlog, and follow the journey of yourself and others. 
+            Whenever you have doen something in your life share it with other persons, 
+            create a post t let them know what you have been up to.
+        </p>
+        <hr class="my-4">
+        <p>Register to start creating posts of what you've been up to.<p>
+        <a class="btn btn-lg btn-primary" href="{% url 'users:register' %}"
+            role="button">Register &raquo;</a>    
+    </div>
+{% endblock page_header %}

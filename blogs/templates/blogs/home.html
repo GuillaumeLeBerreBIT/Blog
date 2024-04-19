@@ -7,22 +7,27 @@
 {% block content %}
 
 {% for blog in blogposted %}
+    <style>
+        .date-right {
+            float: right;
+        }
+    </style>
+
     <div class="card mb-5">
         <h4 class="card-header">
-            {{ blog.owner }} | {{blog.title}} | {{ blog.date_added|date:'M d, Y' }}
+            <span>{{ blog.owner }} | {{blog.title}}</span> 
+            <span class="date-right">{{ blog.date_added|date:'M d - Y' }}</span>
         </h4>
         <div class="card-body">
             {{blog.text}}
         </div>
         <div class="card-footer">
-            <small>
-                <a href="{% url "blogs:edit_blog"  blog.id %}">Edit post</a>
-            </small>
+            <a href="{% url "blogs:edit_blog"  blog.id %}" class="card-link">Edit</a>
+            <a href="{% url "blogs:delete_post"  blog.id %}" class="card-link">Delete</a>   
         </div>
     </div>
 {% empty %}
     <p>Nothing posted yet!</p>
 {% endfor %}
-
 
 {% endblock content %}

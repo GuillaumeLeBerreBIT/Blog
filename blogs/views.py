@@ -1,6 +1,7 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.http import Http404
+from django.contrib import messages
 
 from .models import BlogPost
 from.forms import BlogForm
@@ -10,9 +11,14 @@ def check_user_post(request, post):
     if post.owner != request.user:
         raise Http404
 
-# Create your views here.
+# CREATE YOUR VIEWS HERE.
+def index(request):
+    """The home page of the blog site"""
+    return render(request, 'blogs/index.html')
+
+@login_required
 def blog(request):
-    """The home page for the blog posted"""
+    """Page containing the blog posts"""
     blogposted = BlogPost.objects.order_by('-date_added')
     
     context = {'blogposted': blogposted}
@@ -22,7 +28,9 @@ def blog(request):
 @login_required
 def edit_blog(request, blog_id): 
     """Edit the blog posted """
-    blogpost = BlogPost.objects.get(id=blog_id)
+    #blogpost = BlogPost.objects.get(id=blog_id)
+    blogpost = get_object_or_404(BlogPost, id=blog_id)
+    # Check if the user requested to edit owns the post.
     check_user_post(request, blogpost)
     
     if request.method != 'POST':
@@ -37,6 +45,26 @@ def edit_blog(request, blog_id):
     # Should pass blog to the template in your view. Since you're editing a specific blog post, you should pass the blogpost variable to the template instead.
     context = {'form': form, 'blogpost': blogpost}
     return render(request, 'blogs/edit_blog.html', context) # Then in your edit_blog.html template, use blogpost.id instead of blog.id
+
+# Want to make it so the user can delete his own posts
+@login_required
+def delete_post(request, blog_id):
+    """Deleting a Post"""
+    blogpost = get_object_or_404(BlogPost, id=blog_id)
+    # Need to check if the request by the user is of his own post.
+    check_user_post(request, blogpost)
+    
+    context = {'post': blogpost}
+    # View a page to make sure the user wants to delete the post
+    if request.method == 'GET':
+        return render(request, 'blogs/post_confirm_delete.html', context)
+    
+    elif request.method =='POST':
+        # Delete the POST
+        blogpost.delete()
+        # Create a flash message and redirect the user to the blog posts page.
+        #messages.success(request, 'The post has been deleted successfully!')
+        return redirect('blogs:blog')
 
 # Want to make sure the user is logged in before edit/add blog post.       
 @login_required
